@@ -106,12 +106,14 @@ class DBManager:
             'destChains': Wallet.destChains
         }
 
-        sort_column = sort_options.get(sort_by, Wallet.rank)
+        wallets = session.query(Wallet).all()
 
-        if sort_by == 'rank':
-            wallets = session.query(Wallet).order_by(nullslast(asc(sort_column))).all()
-        else:
-            wallets = session.query(Wallet).order_by(desc(sort_column)).all()
+        # ENABLE sorting:
+        # sort_column = sort_options.get(sort_by, Wallet.rank)
+        # if sort_by == 'rank':
+        #     wallets = session.query(Wallet).order_by(nullslast(asc(sort_column))).all()
+        # else:
+        #     wallets = session.query(Wallet).order_by(desc(sort_column)).all()
 
         min_rank = session.query(func.min(Wallet.rank)).filter(Wallet.rank > 0).scalar()
         total_volume = session.query(func.sum(Wallet.volume)).scalar()

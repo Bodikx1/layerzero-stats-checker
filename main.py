@@ -14,6 +14,9 @@ if __name__ == '__main__':
     wallets_list = load_wallets_from_file("data/wallets.txt")
     proxy_list = load_wallets_from_file("data/proxies.txt")
 
+    # logger.info("wallets_list: %s" % wallets_list);
+    # logger.info("proxy_list: %s" % proxy_list);
+
     DBManager.create_database(
         wallet_list=wallets_list,
         proxy_list=proxy_list,

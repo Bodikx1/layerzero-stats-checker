@@ -69,8 +69,12 @@ class Stats:
         # Specify the CSV file path
         csv_file_path = 'wallet_data.csv'
 
+        # Combine 'networks' and 'destChains' with '/'
+        wallet_data['networks'] = f"{wallet_data['networks']} / {wallet_data['destChains']}"
+        del wallet_data['destChains']  # Remove 'destChains' from dictionary
+
         # Write header if the file doesn't exist
-        header = ['address', 'rankUpdatedAt', 'rank', 'txsCount', 'volume', 'distinctMonths', 'networks', 'contracts', 'destChains']
+        header = ['address', 'rankUpdatedAt', 'rank', 'txsCount', 'volume', 'distinctMonths', 'networks', 'contracts']
         with open(csv_file_path, 'a', newline='') as csv_file:
             writer = csv.DictWriter(csv_file, fieldnames=header)
             if csv_file.tell() == 0:

@@ -1,4 +1,5 @@
 import requests
+import csv
 from core.database import DBManager
 from core.utils import get_hours
 from loguru import logger
@@ -49,6 +50,10 @@ class Stats:
                     }
 
                     logger.success(f'Получил данные для кошелька {self.wallet}')
+
+                    # Save wallet_data to CSV file
+                    self.save_to_csv(wallet_data)
+                    # Save wallet_data to SQLite database
                     DBManager.merge_wallet_data(wallet_data)
                     break
                 else:
@@ -59,6 +64,20 @@ class Stats:
                 logger.error(f'Попытка {attempt} / {attempts} | '
                              f'Ошибка при получении данных {self.wallet}:'
                              f' {e}')
+                
+    def save_to_csv(self, wallet_data):
+        # Specify the CSV file path
+        csv_file_path = 'wallet_data.csv'
+
+        # Write header if the file doesn't exist
+        header = ['address', 'rankUpdatedAt', 'rank', 'txsCount', 'volume', 'distinctMonths', 'networks', 'contracts', 'destChains']
+        with open(csv_file_path, 'a', newline='') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=header)
+            if csv_file.tell() == 0:
+                writer.writeheader()
+
+            # Write wallet_data to CSV file
+            writer.writerow(wallet_data)
 
     def send_request(self):
         headers = {

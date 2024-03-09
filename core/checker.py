@@ -62,7 +62,8 @@ class Stats:
                                  f' {response.text}')
             except Exception as e:
                 logger.error(f'Попытка {attempt} / {attempts} | '
-                             f'Ошибка при получении данных {self.wallet}:'
+                             f'Ошибка при получении данных {self.wallet} | '
+                             f'Прокси {self.proxy_str}:'
                              f' {e}')
                 
     def save_to_csv(self, wallet_data):
